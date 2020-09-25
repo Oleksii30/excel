@@ -56,6 +56,12 @@ class Dom {
   css(styles = {}) {
     Object.keys(styles).forEach(key => this.$el.style[key] = styles[key])
   }
+  getStyles(styles=[]) {    
+    return styles.reduce((res, s) => {     
+      res[s] = this.$el.style[s]
+      return res
+    }, {})
+  }
   addClass(className) {
     this.$el.classList.add(className)
   }
@@ -72,6 +78,14 @@ class Dom {
     }
     return this.dataset.id
   }
+  attr(name, value) {
+    if (value) {
+      this.$el.setAttribute(name, value)
+      return this
+    }
+    this.$el.getAttribute(name)
+    return this
+  }
   findById(id) {
     if (typeof id != 'object' && typeof id != 'string') {
       console.log('Provide correct id')
@@ -87,7 +101,7 @@ class Dom {
     return this
   }
   text(text) {
-    if (typeof text === 'string') {
+    if (typeof text !== 'undefined') {
       if (this.$el.tagName.toLowerCase() === 'input') {
         this.$el.value = text
         return this
